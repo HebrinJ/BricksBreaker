@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -15,13 +16,21 @@ public class GameController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text finishScoreText, finishHighScoreText;
 
-    private bool isGameOver = false;
+    //private bool isGameOver = false;
+    public GameObject winPanel;
+
+    private int bricksCount;
+    public GameObject bricks;
+
+    public GameObject level1, level2, level3;
 
     void Start()
     {
         lives = 3;
         gameOverPanel.SetActive(false);
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
+        bricksCount = bricks.transform.childCount;
+        
     }
 
     public void UpScore()
@@ -52,7 +61,7 @@ public class GameController : MonoBehaviour
 
         if (lives <= 0)
         {
-            isGameOver = true;
+            //isGameOver = true;
             gameOverPanel.SetActive(true);
             finishScoreText.text = "Score: " +score.ToString();
 
@@ -75,18 +84,38 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
+        SceneManager.LoadScene(0);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
         lives = 3;
-        heart1.enabled = true;
-        heart2.enabled = true;
-        heart3.enabled = true;
+        //heart1.enabled = true;
+        //heart2.enabled = true;
+        //heart3.enabled = true;
         score = 0;
-        scoreText.text = score.ToString();
+        //scoreText.text = score.ToString();
     }
 
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void BricksRemove()
+    {
+        bricksCount--;
+
+        if (bricksCount == 0)
+        {
+            winPanel.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
+
+    public void NextLevel()
+    {
+        Time.timeScale = 1;
+        level1.SetActive(false);
+
+        //выбрать какой левел загружать
     }
 }

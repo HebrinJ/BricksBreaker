@@ -17,6 +17,7 @@ public class Brick : MonoBehaviour
         GameObject explosion = Instantiate(burst, transform.position, Quaternion.identity);
         explosion.GetComponent<ParticleSystem>().Play();
         gameController.UpScore();
+        gameController.BricksRemove();
 
         Destroy(gameObject);
         Destroy(explosion, 3f);

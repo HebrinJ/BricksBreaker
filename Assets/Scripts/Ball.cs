@@ -9,14 +9,14 @@ public class Ball : MonoBehaviour
     public GameObject startPosition, platform;
     private bool startGame;
     private Vector2 direction;
-    private BoxCollider2D platformBox;
+    private PolygonCollider2D platformBox;
     private AudioSource audioSource;
     private GameController gameController;
    
     void Start()
     {
         rbBall = GetComponent<Rigidbody2D>();
-        platformBox = platform.GetComponent<BoxCollider2D>();
+        platformBox = platform.GetComponent<PolygonCollider2D>();
         audioSource = GetComponent<AudioSource>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         transform.position = startPosition.transform.position;
