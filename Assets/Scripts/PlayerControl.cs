@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    public float horizontalMove;
-    float speed = 0.25f;
+    private float horizontalMove;
+    private float speed = 0.25f;
+    private AudioSource audioSource;
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -26,6 +27,14 @@ public class PlayerControl : MonoBehaviour
         else if (horizontalMove > 0)
         {
             transform.Translate(Vector2.right.normalized * speed);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Ball"))
+        {
+            audioSource.Play();
         }
     }
 }
