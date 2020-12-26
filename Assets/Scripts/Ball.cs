@@ -5,13 +5,16 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     Rigidbody2D rbBall;
-    float startSpeed = 300;
-    public GameObject startPosition;
+    float startSpeed = 280;
+    public GameObject startPosition, platform;
     private bool startGame;
-
+    private Vector2 direction;
+    private BoxCollider2D platformBox;
+   
     void Start()
     {
         rbBall = GetComponent<Rigidbody2D>();
+        platformBox = platform.GetComponent<BoxCollider2D>();
         transform.position = startPosition.transform.position;
         startGame = true;
     }
@@ -42,7 +45,10 @@ public class Ball : MonoBehaviour
 
     void StartImpulse()
     {
-        rbBall.AddForce(Vector2.up * startSpeed);
+        rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
         startGame = false;
+
     }
+
+    
 }
