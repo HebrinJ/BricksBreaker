@@ -16,20 +16,20 @@ public class GameController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text finishScoreText, finishHighScoreText;
 
-    //private bool isGameOver = false;
     public GameObject winPanel;
 
     private int bricksCount;
-    public GameObject bricks;
-
+  
     public GameObject level1, level2, level3;
+    public bool startGame;
+    private int currentLevel;
 
     void Start()
     {
-        lives = 3;
         gameOverPanel.SetActive(false);
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
-        bricksCount = bricks.transform.childCount;
+        Restart();
+        bricksCount = level1.transform.childCount;
         
     }
 
@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour
 
         if (lives <= 0)
         {
-            //isGameOver = true;
+            
             gameOverPanel.SetActive(true);
             finishScoreText.text = "Score: " +score.ToString();
 
@@ -84,15 +84,18 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(0);
+        currentLevel = 1;
+        LoadLevel(currentLevel);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
+        winPanel.SetActive(false);
         lives = 3;
-        //heart1.enabled = true;
-        //heart2.enabled = true;
-        //heart3.enabled = true;
+        heart1.enabled = true;
+        heart2.enabled = true;
+        heart3.enabled = true;
         score = 0;
-        //scoreText.text = score.ToString();
+        startGame = true;
+        scoreText.text = "score: " +score.ToString();
     }
 
     public void Quit()
@@ -111,11 +114,41 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void NextLevel()
+    public void ChooseNextLevel()
     {
         Time.timeScale = 1;
-        level1.SetActive(false);
+        LoadLevel(++currentLevel);
 
-        //выбрать какой левел загружать
+    }
+
+    void LoadLevel(int currentLevel)
+    {
+        if(currentLevel == 1)
+        {
+            level1.SetActive(true);
+            level2.SetActive(false);
+            level3.SetActive(false);
+            bricksCount = level1.transform.childCount;
+            winPanel.SetActive(false);
+        }
+        else if(currentLevel == 2)
+        {
+            level1.SetActive(false);
+            level2.SetActive(true);
+            level3.SetActive(false);
+            bricksCount = level2.transform.childCount;
+            winPanel.SetActive(false);
+        }
+        else if(currentLevel == 3)
+        {
+            level1.SetActive(false);
+            level2.SetActive(false);
+            level3.SetActive(true);
+            bricksCount = level3.transform.childCount;
+        }
+        else
+        {
+            Restart();
+        }
     }
 }

@@ -7,8 +7,6 @@ public class Ball : MonoBehaviour
     Rigidbody2D rbBall;
     float startSpeed = 280;
     public GameObject startPosition, platform;
-    private bool startGame;
-    private Vector2 direction;
     private PolygonCollider2D platformBox;
     private AudioSource audioSource;
     private GameController gameController;
@@ -20,12 +18,12 @@ public class Ball : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         transform.position = startPosition.transform.position;
-        startGame = true;
+        
     }
 
     void Update()
     {
-        if(startGame)
+        if(gameController.startGame)
         {
             transform.position = startPosition.transform.position;
 
@@ -45,14 +43,14 @@ public class Ball : MonoBehaviour
             gameController.RemoveLive();
             transform.position = startPosition.transform.position;
             rbBall.velocity = Vector2.zero;
-            startGame = true;
+            gameController.startGame = true;
         }
     }
 
     void StartImpulse()
     {
         rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
-        startGame = false;
+        gameController.startGame = false;
 
     }
 
