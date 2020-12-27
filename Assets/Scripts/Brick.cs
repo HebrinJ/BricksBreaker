@@ -19,6 +19,7 @@ public class Brick : MonoBehaviour
         gameController.UpScore();
         gameController.BricksRemove();
 
+        
         Destroy(gameObject);
         Destroy(explosion, 3f);
     }

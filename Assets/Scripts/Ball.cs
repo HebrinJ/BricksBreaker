@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour
     private PolygonCollider2D platformBox;
     private AudioSource audioSource;
     private GameController gameController;
+    public GameObject fallingObject;
    
     void Start()
     {
@@ -44,6 +45,16 @@ public class Ball : MonoBehaviour
             transform.position = startPosition.transform.position;
             rbBall.velocity = Vector2.zero;
             gameController.startGame = true;
+        }
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("GoldBrick"))
+        {
+            Instantiate(fallingObject, collision.transform.position, Quaternion.identity);
+            
         }
     }
 

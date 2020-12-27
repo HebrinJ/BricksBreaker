@@ -28,7 +28,9 @@ public class GameController : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
-        Restart();
+        lives = 3;
+        score = 0;
+        startGame = true;
         bricksCount = level1.transform.childCount;
         
     }
@@ -85,7 +87,7 @@ public class GameController : MonoBehaviour
     public void Restart()
     {
         currentLevel = 1;
-        LoadLevel(currentLevel);
+        SceneManager.LoadScene(0);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
         winPanel.SetActive(false);

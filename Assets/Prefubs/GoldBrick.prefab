@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 3872633048090076577}
   - component: {fileID: 3872633048090076580}
   m_Layer: 0
-  m_Name: Brick
-  m_TagString: Brick
+  m_Name: GoldBrick
+  m_TagString: GoldBrick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0c7e56209097a0545a14e079d7498e20, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.75627196, g: 0.8584906, b: 0.22272164, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
