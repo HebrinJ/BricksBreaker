@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FallingObjects : MonoBehaviour
 {
-    public Sprite liveSprite, expandSprite;
+    public Sprite liveSprite, expandSprite, narrowSprite, slowSprite, ammoSprite, explodeSprite;
     private SpriteRenderer spRender;
-    private ObjectTypes type;
+    public static ObjectTypes type;
+    
 
     private void Start()
     {
+        
         spRender = GetComponent<SpriteRenderer>();
         type = SetType();
 
@@ -20,6 +22,18 @@ public class FallingObjects : MonoBehaviour
                 break;
             case ObjectTypes.expand:
                 spRender.sprite = expandSprite;
+                break;
+            case ObjectTypes.narrow:
+                spRender.sprite = narrowSprite;
+                break;
+            case ObjectTypes.slow:
+                spRender.sprite = slowSprite;
+                break;
+            case ObjectTypes.ammo:
+                spRender.sprite = ammoSprite;
+                break;
+            case ObjectTypes.explode:
+                spRender.sprite = explodeSprite;
                 break;
             default:
                 break;
@@ -35,7 +49,7 @@ public class FallingObjects : MonoBehaviour
 
     private ObjectTypes SetType()
     {
-        int index = Random.Range(1, 3);
+        int index = Random.Range(1, 7);
 
         switch (index)
         {
@@ -43,6 +57,14 @@ public class FallingObjects : MonoBehaviour
                 return ObjectTypes.live;
             case 2:
                 return ObjectTypes.expand;
+            case 3:
+                return ObjectTypes.narrow;
+            case 4:
+                return ObjectTypes.slow;
+            case 5:
+                return ObjectTypes.ammo;
+            case 6:
+                return ObjectTypes.explode;
             default:
                 break;
         }
@@ -50,11 +72,22 @@ public class FallingObjects : MonoBehaviour
         return ObjectTypes.live;
     }
 
-
+    /*private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            
+            Destroy(gameObject);
+        }
+    }*/
 }
 
-enum ObjectTypes
+public enum ObjectTypes
 {
     live,
-    expand
+    expand,
+    narrow,
+    slow,
+    ammo,
+    explode
 }
