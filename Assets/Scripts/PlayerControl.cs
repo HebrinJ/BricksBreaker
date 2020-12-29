@@ -10,7 +10,7 @@ public class PlayerControl : MonoBehaviour
     private GameController gameController;
     public GameObject controllerObject;
 
-    public static bool isExplodeBall;
+    public static bool isExplodeBall, isSlow;
 
         void Start()
     {
@@ -89,6 +89,8 @@ public class PlayerControl : MonoBehaviour
                 break;
 
             case ObjectTypes.slow:
+                isSlow = true;
+                Invoke("ResetSlow", 10f);
                 Debug.Log("slow");
                 break;
 
@@ -121,4 +123,8 @@ public class PlayerControl : MonoBehaviour
         isExplodeBall = false;
     }
 
+    private void ResetSlow ()
+    {
+        isSlow = false;
+    }
 }

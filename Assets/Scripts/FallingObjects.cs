@@ -51,7 +51,7 @@ public class FallingObjects : MonoBehaviour
     {
         int index = Random.Range(1, 7);
 
-        switch (index)
+        /*switch (index)
         {
             case 1:
                 return ObjectTypes.live;
@@ -67,9 +67,9 @@ public class FallingObjects : MonoBehaviour
                 return ObjectTypes.explode;
             default:
                 break;
-        }
+        }*/
 
-        return ObjectTypes.live;
+        return ObjectTypes.slow;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

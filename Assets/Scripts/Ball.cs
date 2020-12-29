@@ -11,6 +11,8 @@ public class Ball : MonoBehaviour
     private AudioSource audioSource;
     private GameController gameController;
     public GameObject fallingObject;
+
+    private bool isSlowed;
    
     void Start()
     {
@@ -33,6 +35,17 @@ public class Ball : MonoBehaviour
                 StartImpulse();
                 
             }
+        }
+
+        if(PlayerControl.isSlow && !isSlowed)
+        {
+            rbBall.velocity = new Vector2(rbBall.velocity.x / 2, rbBall.velocity.y / 2);
+            isSlowed = true;
+        }
+        else if(!PlayerControl.isSlow && isSlowed)
+        {
+            rbBall.velocity = new Vector2(rbBall.velocity.x * 2, rbBall.velocity.y * 2);
+            isSlowed = false;
         }
     }
 
@@ -58,7 +71,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    void StartImpulse()
+    public void StartImpulse()
     {
         rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
         gameController.startGame = false;

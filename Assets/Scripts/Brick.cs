@@ -27,6 +27,8 @@ public class Brick : MonoBehaviour
             {
                 if (item.CompareTag("Ball"))
                     continue;
+
+                gameController.BricksRemove();
                 Destroy(item.gameObject);
             }
             GameObject massExplode = Instantiate(explode, transform.position, Quaternion.identity);
