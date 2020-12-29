@@ -10,6 +10,8 @@ public class PlayerControl : MonoBehaviour
     private GameController gameController;
     public GameObject controllerObject;
 
+    public static bool isExplodeBall;
+
         void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -78,22 +80,45 @@ public class PlayerControl : MonoBehaviour
             
             case ObjectTypes.expand:
                 transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+                Invoke("ResetExpand", 10f);
                 break;
 
             case ObjectTypes.narrow:
-                Debug.Log("nar");
+                transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+                Invoke("ResetNarrow", 10f);
                 break;
+
             case ObjectTypes.slow:
                 Debug.Log("slow");
                 break;
+
             case ObjectTypes.ammo:
                 Debug.Log("ammo");
                 break;
+
             case ObjectTypes.explode:
-                Debug.Log("explode");
+                isExplodeBall = true;
+                Invoke("ResetExplode", 5f);
                 break;
+
             default:
                 break;
         }
     }
+
+    private void ResetExpand()
+    {
+        transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+    }
+
+    private void ResetNarrow()
+    {
+        transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+    }
+
+    private void ResetExplode()
+    {
+        isExplodeBall = false;
+    }
+
 }
