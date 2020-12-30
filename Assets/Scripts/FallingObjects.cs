@@ -69,7 +69,7 @@ public class FallingObjects : MonoBehaviour
                 break;
         }*/
 
-        return ObjectTypes.slow;
+        return ObjectTypes.ammo;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

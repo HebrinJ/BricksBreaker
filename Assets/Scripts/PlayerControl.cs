@@ -11,17 +11,40 @@ public class PlayerControl : MonoBehaviour
     public GameObject controllerObject;
 
     public static bool isExplodeBall, isSlow;
+    public GameObject shootingPosition, bullet;
+    private bool canShoot;
+    private int ammo;
+    
+    
 
         void Start()
     {
         audioSource = GetComponent<AudioSource>();
         gameController = GetComponent<GameController>();
-        
+        shootingPosition.SetActive(false);
+        canShoot = false;
     }
 
     void Update()
     {
         horizontalMove = Input.GetAxis("Horizontal");
+        
+        if(canShoot)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (ammo > 0)
+                {
+                    Instantiate(bullet, shootingPosition.transform.position, Quaternion.identity);
+                    ammo--;
+                    if (ammo == 0)
+                    {
+                        ResetShooting();
+                    }
+                }
+            }
+        }
+        
         
     }
 
@@ -91,11 +114,12 @@ public class PlayerControl : MonoBehaviour
             case ObjectTypes.slow:
                 isSlow = true;
                 Invoke("ResetSlow", 10f);
-                Debug.Log("slow");
                 break;
 
             case ObjectTypes.ammo:
-                Debug.Log("ammo");
+                shootingPosition.SetActive(true);
+                canShoot = true;
+                ammo = 3;
                 break;
 
             case ObjectTypes.explode:
@@ -123,8 +147,16 @@ public class PlayerControl : MonoBehaviour
         isExplodeBall = false;
     }
 
-    private void ResetSlow ()
+    private void ResetSlow()
     {
         isSlow = false;
+    }
+
+    public void ResetShooting()
+    {
+        shootingPosition.SetActive(false);
+        canShoot = false;
+        ammo = 0;
+        Debug.Log("reset");
     }
 }

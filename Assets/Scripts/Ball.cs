@@ -7,21 +7,23 @@ public class Ball : MonoBehaviour
     Rigidbody2D rbBall;
     float startSpeed = 280;
     public GameObject startPosition, platform;
-    private PolygonCollider2D platformBox;
+    
+    //private PolygonCollider2D platformBox;
     private AudioSource audioSource;
     private GameController gameController;
     public GameObject fallingObject;
 
     private bool isSlowed;
+    private PlayerControl playerControl;
    
     void Start()
     {
         rbBall = GetComponent<Rigidbody2D>();
-        platformBox = platform.GetComponent<PolygonCollider2D>();
+        //platformBox = platform.GetComponent<PolygonCollider2D>();
         audioSource = GetComponent<AudioSource>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         transform.position = startPosition.transform.position;
-        
+        playerControl = platform.GetComponent<PlayerControl>();
     }
 
     void Update()
@@ -58,6 +60,7 @@ public class Ball : MonoBehaviour
             transform.position = startPosition.transform.position;
             rbBall.velocity = Vector2.zero;
             gameController.startGame = true;
+            playerControl.ResetShooting();
         }
 
     }

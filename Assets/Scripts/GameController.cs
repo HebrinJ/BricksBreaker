@@ -24,6 +24,9 @@ public class GameController : MonoBehaviour
     public bool startGame;
     private int currentLevel;
 
+    public GameObject playeplatform;
+    private PlayerControl playerControl;
+
     void Start()
     {
         gameOverPanel.SetActive(false);
@@ -32,7 +35,7 @@ public class GameController : MonoBehaviour
         score = 0;
         startGame = true;
         bricksCount = level1.transform.childCount;
-        
+        playerControl = playeplatform.GetComponent<PlayerControl>();
     }
 
     public void UpScore()
@@ -98,6 +101,7 @@ public class GameController : MonoBehaviour
         score = 0;
         startGame = true;
         scoreText.text = "score: " +score.ToString();
+        playerControl.ResetShooting();
     }
 
     public void Quit()
