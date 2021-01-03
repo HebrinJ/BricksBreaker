@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     Rigidbody2D rbBall;
-    float startSpeed = 280;
+    float startSpeed = 320;
     public GameObject startPosition, platform;
     
     //private PolygonCollider2D platformBox;
@@ -72,14 +72,15 @@ public class Ball : MonoBehaviour
             Instantiate(fallingObject, collision.transform.position, Quaternion.identity);
             
         }
+                
     }
 
     public void StartImpulse()
     {
-        rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
+        //rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
+        rbBall.AddForce(new Vector2(0, 1) * startSpeed);
         gameController.startGame = false;
 
     }
-
-    
+        
 }

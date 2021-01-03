@@ -15,8 +15,10 @@ public class GameController : MonoBehaviour
     public Image heart1, heart2, heart3;
     public GameObject gameOverPanel;
     public Text finishScoreText, finishHighScoreText;
+    public Text winScoreText, winHighScoreText;
 
     public GameObject winPanel;
+    public GameObject pausePanel;
 
     private int bricksCount;
   
@@ -24,18 +26,46 @@ public class GameController : MonoBehaviour
     public bool startGame;
     private int currentLevel;
 
-    public GameObject playeplatform;
+    public GameObject playerplatform;
     private PlayerControl playerControl;
+
+    
 
     void Start()
     {
         gameOverPanel.SetActive(false);
+        pausePanel.SetActive(false);
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
         lives = 3;
         score = 0;
         startGame = true;
         bricksCount = level1.transform.childCount;
-        playerControl = playeplatform.GetComponent<PlayerControl>();
+        playerControl = playerplatform.GetComponent<PlayerControl>();
+        currentLevel = 1;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
+      
+    }
+
+    private void Pause()
+    {
+        Time.timeScale = 0;
+        
+        pausePanel.SetActive(true);
+        
+    }
+
+    public void Resume()
+    {
+        
+        Time.timeScale = 1;
+        pausePanel.SetActive(false);
     }
 
     public void UpScore()
@@ -109,6 +139,8 @@ public class GameController : MonoBehaviour
         Application.Quit();
     }
 
+    
+
     public void BricksRemove()
     {
         bricksCount--;
@@ -117,6 +149,20 @@ public class GameController : MonoBehaviour
         {
             winPanel.SetActive(true);
             Time.timeScale = 0;
+            
+            if (highScore == 0)
+            {
+                highScore = score;
+                PlayerPrefs.SetInt("HighScore", highScore);
+            }
+            else if (score > highScore)
+            {
+                highScore = score;
+                PlayerPrefs.SetInt("HighScore", highScore);
+            }
+
+            winScoreText.text = "Score: " + score;
+            winHighScoreText.text = "High Score: " + highScore.ToString();
         }
     }
 
@@ -151,6 +197,7 @@ public class GameController : MonoBehaviour
             level2.SetActive(false);
             level3.SetActive(true);
             bricksCount = level3.transform.childCount;
+            winPanel.SetActive(false);
         }
         else
         {

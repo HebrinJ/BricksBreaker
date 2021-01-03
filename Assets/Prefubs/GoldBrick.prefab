@@ -93,7 +93,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3872633048090076576}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7b1d9e9dfebe8dc4a890e379e6d5c3ac, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -123,4 +123,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   burst: {fileID: 2886571326326136227, guid: b4757c1a191009d4b98dd233328fb6f1, type: 3}
-  fallingObject: {fileID: 7191738764986403239, guid: 5119794853e55b9498fa41b400b4ebcf, type: 3}
+  explode: {fileID: 0}
