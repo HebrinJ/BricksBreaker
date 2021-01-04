@@ -96,12 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb957be2af7d9f4f8afd8ae7fd18fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liveSprite: {fileID: 21300000, guid: 4eac72d58d5d30944ba045607165c7e6, type: 3}
-  expandSprite: {fileID: 21300000, guid: 2cf6e465b1fc768439f00ddac51fe524, type: 3}
-  narrowSprite: {fileID: 21300000, guid: 2cf6e465b1fc768439f00ddac51fe524, type: 3}
-  slowSprite: {fileID: 21300000, guid: 2cf6e465b1fc768439f00ddac51fe524, type: 3}
-  ammoSprite: {fileID: 21300000, guid: 2cf6e465b1fc768439f00ddac51fe524, type: 3}
-  explodeSprite: {fileID: 21300000, guid: 2cf6e465b1fc768439f00ddac51fe524, type: 3}
+  liveSprite: {fileID: 21300000, guid: 1ab293781e9dd5743927ad8723be99ee, type: 3}
+  expandSprite: {fileID: 21300000, guid: cc41ee4b9aa631049971106802d6cbe2, type: 3}
+  narrowSprite: {fileID: 21300000, guid: 4ab7e787f01d1374aa260ff2047af513, type: 3}
+  slowSprite: {fileID: 21300000, guid: a7e84b5fc100454499e470d8ffcd5308, type: 3}
+  ammoSprite: {fileID: 21300000, guid: 93ee468453c16b548bcc6fcdaa4cb832, type: 3}
+  explodeSprite: {fileID: 21300000, guid: af3c0a93c8c2247448b73f8ad01fe161, type: 3}
 --- !u!61 &-752995488120997668
 BoxCollider2D:
   m_ObjectHideFlags: 0

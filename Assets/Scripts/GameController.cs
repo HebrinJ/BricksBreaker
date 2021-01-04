@@ -29,7 +29,9 @@ public class GameController : MonoBehaviour
     public GameObject playerplatform;
     private PlayerControl playerControl;
 
-    
+    public GameObject startPosition;
+
+    private AudioListener audio;
 
     void Start()
     {
@@ -42,6 +44,8 @@ public class GameController : MonoBehaviour
         bricksCount = level1.transform.childCount;
         playerControl = playerplatform.GetComponent<PlayerControl>();
         currentLevel = 1;
+        audio = GetComponent<AudioListener>();
+        SetSound();
     }
 
     private void Update()
@@ -51,6 +55,15 @@ public class GameController : MonoBehaviour
             Pause();
         }
       
+    }
+
+    private void SetSound()
+    {
+        if (PlayerPrefs.GetInt("Sound") == 1)
+            audio.enabled = true;
+
+        else if (PlayerPrefs.GetInt("Sound") == 0)
+            audio.enabled = false;
     }
 
     private void Pause()
@@ -120,7 +133,7 @@ public class GameController : MonoBehaviour
     public void Restart()
     {
         currentLevel = 1;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
         winPanel.SetActive(false);
@@ -190,6 +203,11 @@ public class GameController : MonoBehaviour
             level3.SetActive(false);
             bricksCount = level2.transform.childCount;
             winPanel.SetActive(false);
+            GameObject ball = GameObject.Find("Ball");
+            ball.transform.position = startPosition.transform.position;
+            Rigidbody2D rbBall = ball.GetComponent<Rigidbody2D>();
+            rbBall.velocity = Vector2.zero;
+            startGame = true;
         }
         else if(currentLevel == 3)
         {
@@ -198,6 +216,11 @@ public class GameController : MonoBehaviour
             level3.SetActive(true);
             bricksCount = level3.transform.childCount;
             winPanel.SetActive(false);
+            GameObject ball = GameObject.Find("Ball");
+            ball.transform.position = startPosition.transform.position;
+            Rigidbody2D rbBall = ball.GetComponent<Rigidbody2D>();
+            rbBall.velocity = Vector2.zero;
+            startGame = true;
         }
         else
         {

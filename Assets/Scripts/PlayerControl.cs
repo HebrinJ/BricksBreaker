@@ -65,6 +65,24 @@ public class PlayerControl : MonoBehaviour
         if(collision.collider.CompareTag("Ball"))
         {
             audioSource.Play();
+            
+            ///Начало. Изменение направления полета мяча в зависимости от того с какой частью платформы он столкнулся
+            Rigidbody2D ball = collision.gameObject.GetComponent<Rigidbody2D>();
+            Vector2 hitPoint = collision.contacts[0].point;
+            Vector2 platformCenter = new Vector2(transform.position.x, transform.position.y);
+            ball.velocity = Vector2.zero;
+
+            float difference = platformCenter.x - hitPoint.x;
+
+            if(hitPoint.x < platformCenter.x)
+            {
+                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 230));
+            }
+            else
+            {
+                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 230));
+            }
+            ///Конец.
         }
     }
 
@@ -157,6 +175,6 @@ public class PlayerControl : MonoBehaviour
         shootingPosition.SetActive(false);
         canShoot = false;
         ammo = 0;
-        Debug.Log("reset");
+        
     }
 }

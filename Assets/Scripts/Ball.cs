@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     Rigidbody2D rbBall;
-    float startSpeed = 320;
+    private float startSpeed = 320;
     public GameObject startPosition, platform;
     
     //private PolygonCollider2D platformBox;
