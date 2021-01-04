@@ -6,17 +6,19 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    private AudioListener audio;
+    
     public GameObject soundButton;
     public Sprite soundOn, soundOff;
     private Image image;
     private int audioStatus = 1;
     void Start()
     {
-        audio = GetComponent<AudioListener>();
         audioStatus = PlayerPrefs.GetInt("Sound");
         image = soundButton.GetComponent<Image>();
-        SoundSetting();
+        if (audioStatus == 0)
+            image.sprite = soundOff;
+        else
+            image.sprite = soundOn;
     }
 
     public void StartGame()
@@ -33,7 +35,7 @@ public class MainMenu : MonoBehaviour
     {
         if (audioStatus == 0)
         {
-            audio.enabled = true;
+            AudioListener.volume = 1;
             audioStatus = 1;
             PlayerPrefs.SetInt("Sound", audioStatus);
             image.sprite = soundOn;
@@ -42,7 +44,7 @@ public class MainMenu : MonoBehaviour
 
         if (audioStatus == 1)
         {
-            audio.enabled = false;
+            AudioListener.volume = 0;
             audioStatus = 0;
             PlayerPrefs.SetInt("Sound", audioStatus);
             image.sprite = soundOff;

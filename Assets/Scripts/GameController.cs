@@ -16,9 +16,11 @@ public class GameController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text finishScoreText, finishHighScoreText;
     public Text winScoreText, winHighScoreText;
+    public Text winGameScoreText, winGameHighScoreText;
 
     public GameObject winPanel;
     public GameObject pausePanel;
+    public GameObject winGamePanel;
 
     private int bricksCount;
   
@@ -31,7 +33,7 @@ public class GameController : MonoBehaviour
 
     public GameObject startPosition;
 
-    private AudioListener audio;
+    //private AudioListener audio;
     private AudioSource audioSource;
     public AudioClip gameOverSound, winSound;
 
@@ -47,7 +49,7 @@ public class GameController : MonoBehaviour
         playerControl = playerplatform.GetComponent<PlayerControl>();
         currentLevel = 1;
         audioSource = GetComponent<AudioSource>();
-        audio = GetComponent<AudioListener>();
+        //audio = GetComponent<AudioListener>();
         SetSound();
 
     }
@@ -64,10 +66,10 @@ public class GameController : MonoBehaviour
     private void SetSound()
     {
         if (PlayerPrefs.GetInt("Sound") == 1)
-            audio.enabled = true;
+            AudioListener.volume = 1;
 
         else if (PlayerPrefs.GetInt("Sound") == 0)
-            audio.enabled = false;
+            AudioListener.volume = 0;
     }
 
     private void Pause()
@@ -167,7 +169,18 @@ public class GameController : MonoBehaviour
 
         if (bricksCount == 0)
         {
-            winPanel.SetActive(true);
+            if (currentLevel < 3)
+            {
+                winPanel.SetActive(true);
+            }
+            else if (currentLevel >= 3)
+            {
+                Time.timeScale = 0;
+                winGamePanel.SetActive(true);
+                winGameScoreText.text = "Score: " + score.ToString();
+                winGameHighScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore").ToString();
+            }
+
             audioSource.clip = winSound;
             audioSource.Play();
             Time.timeScale = 0;
@@ -231,9 +244,15 @@ public class GameController : MonoBehaviour
             rbBall.velocity = Vector2.zero;
             startGame = true;
         }
+        
         else
         {
             Restart();
         }
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
