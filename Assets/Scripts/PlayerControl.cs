@@ -26,7 +26,7 @@ public class PlayerControl : MonoBehaviour
         void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        gameController = GetComponent<GameController>();
+        gameController = controllerObject.GetComponent<GameController>();
         shootingPosition.SetActive(false);
         canShoot = false;
         textEffect = GameObject.Find("Canvas").GetComponent<ShowTextEffect>();

@@ -15,11 +15,11 @@ public class MainMenu : MonoBehaviour
     {
         audioStatus = PlayerPrefs.GetInt("Sound");
         image = soundButton.GetComponent<Image>();
-        //audioStatus == 0 ? image.sprite = soundOff : image.sprite = soundOn;
-        if (audioStatus == 0)
+        image.sprite = audioStatus == 0 ? soundOff : soundOn;
+        /*if (audioStatus == 0)
             image.sprite = soundOff;
         else
-            image.sprite = soundOn;
+            image.sprite = soundOn;*/
     }
 
     public void StartGame()
