@@ -123,4 +123,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   burst: {fileID: 2886571326326136227, guid: b4757c1a191009d4b98dd233328fb6f1, type: 3}
-  explode: {fileID: 0}
+  explode: {fileID: 6942878140212994581, guid: a4efbca6668dda94ebdf4921cfca1eac, type: 3}

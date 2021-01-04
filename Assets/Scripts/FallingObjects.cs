@@ -32,9 +32,9 @@ public class FallingObjects : MonoBehaviour
             case ObjectTypes.ammo:
                 spRender.sprite = ammoSprite;
                 break;
-            case ObjectTypes.explode:
+            /*case ObjectTypes.explode:
                 spRender.sprite = explodeSprite;
-                break;
+                break;*/
             default:
                 break;
         }
@@ -49,7 +49,7 @@ public class FallingObjects : MonoBehaviour
 
     private ObjectTypes SetType()
     {
-        int index = Random.Range(1, 7);
+        int index = Random.Range(1, 6);
 
         switch (index)
         {
@@ -72,14 +72,6 @@ public class FallingObjects : MonoBehaviour
         return ObjectTypes.live;
     }
 
-    /*private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Player"))
-        {
-            
-            Destroy(gameObject);
-        }
-    }*/
 }
 
 public enum ObjectTypes
@@ -89,5 +81,5 @@ public enum ObjectTypes
     narrow,
     slow,
     ammo,
-    explode
+    explode //эффект отключен
 }

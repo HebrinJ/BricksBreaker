@@ -6,10 +6,13 @@ public class Brick : MonoBehaviour
 {
     public GameObject burst, explode;
     private GameController gameController;
+    //private AudioSource audioSource;
 
     private void Start()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        //audioSource = GetComponent<AudioSource>();
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -18,10 +21,14 @@ public class Brick : MonoBehaviour
         explosion.GetComponent<ParticleSystem>().Play();
         gameController.UpScore();
         gameController.BricksRemove();
-
+        
+        /* Эффект взрыва отключен
+         * 
         if (PlayerControl.isExplodeBall == true)
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.8f);
+            audioSource.Play();
+            Debug.Log("buh");
             
             foreach (var item in colliders)
             {
@@ -33,7 +40,8 @@ public class Brick : MonoBehaviour
             }
             GameObject massExplode = Instantiate(explode, transform.position, Quaternion.identity);
             massExplode.GetComponent<ParticleSystem>().Play();
-        }
+            
+        }*/
 
         Destroy(gameObject);
         Destroy(explosion, 3f);

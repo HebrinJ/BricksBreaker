@@ -77,7 +77,7 @@ public class Ball : MonoBehaviour
 
     public void StartImpulse()
     {
-        //rbBall.AddForce(new Vector2(Random.Range(-1.5f, 1.5f), 1) * startSpeed);
+        
         rbBall.AddForce(new Vector2(0, 1) * startSpeed);
         gameController.startGame = false;
 

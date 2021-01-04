@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviour
 {
     private float horizontalMove;
     private float speed = 0.25f;
+    
     private AudioSource audioSource;
+    public AudioClip shootingSound, collisionSound, bonusSound;
+
     private GameController gameController;
     public GameObject controllerObject;
 
@@ -14,8 +18,8 @@ public class PlayerControl : MonoBehaviour
     public GameObject shootingPosition, bullet;
     private bool canShoot;
     private int ammo;
-    
-    
+
+    ShowTextEffect textEffect;
 
         void Start()
     {
@@ -23,6 +27,7 @@ public class PlayerControl : MonoBehaviour
         gameController = GetComponent<GameController>();
         shootingPosition.SetActive(false);
         canShoot = false;
+        textEffect = GameObject.Find("Canvas").GetComponent<ShowTextEffect>();
     }
 
     void Update()
@@ -36,6 +41,8 @@ public class PlayerControl : MonoBehaviour
                 if (ammo > 0)
                 {
                     Instantiate(bullet, shootingPosition.transform.position, Quaternion.identity);
+                    audioSource.clip = shootingSound;
+                    audioSource.Play();
                     ammo--;
                     if (ammo == 0)
                     {
@@ -64,6 +71,7 @@ public class PlayerControl : MonoBehaviour
     {
         if(collision.collider.CompareTag("Ball"))
         {
+            audioSource.clip = collisionSound;
             audioSource.Play();
             
             ///Начало. Изменение направления полета мяча в зависимости от того с какой частью платформы он столкнулся
@@ -91,7 +99,12 @@ public class PlayerControl : MonoBehaviour
         if(collision.CompareTag("FallingObject"))
         {
             ObjectTypes type = FallingObjects.type;
+            audioSource.clip = bonusSound;
+            audioSource.Play();
             TakeEffect(type);
+
+            textEffect.ShowText();
+
             Destroy(collision.gameObject);
             
         }
@@ -121,31 +134,36 @@ public class PlayerControl : MonoBehaviour
             
             case ObjectTypes.expand:
                 transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+                ShowTextEffect.spawnText = "Expand!!";
                 Invoke("ResetExpand", 10f);
                 break;
 
             case ObjectTypes.narrow:
                 transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+                ShowTextEffect.spawnText = "narrow...";
                 Invoke("ResetNarrow", 10f);
                 break;
 
             case ObjectTypes.slow:
                 isSlow = true;
+                ShowTextEffect.spawnText = "Slow!";
                 Invoke("ResetSlow", 10f);
                 break;
 
             case ObjectTypes.ammo:
                 shootingPosition.SetActive(true);
+                ShowTextEffect.spawnText = "Shoot!!";
                 canShoot = true;
                 ammo = 3;
                 break;
 
             case ObjectTypes.explode:
                 isExplodeBall = true;
-                Invoke("ResetExplode", 5f);
+                Invoke("ResetExplode", 20f);
                 break;
 
             default:
+                ShowTextEffect.spawnText = "";
                 break;
         }
     }

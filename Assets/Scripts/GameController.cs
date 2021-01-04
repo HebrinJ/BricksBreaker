@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     public GameObject startPosition;
 
     private AudioListener audio;
+    private AudioSource audioSource;
+    public AudioClip gameOverSound, winSound;
 
     void Start()
     {
@@ -44,8 +46,10 @@ public class GameController : MonoBehaviour
         bricksCount = level1.transform.childCount;
         playerControl = playerplatform.GetComponent<PlayerControl>();
         currentLevel = 1;
+        audioSource = GetComponent<AudioSource>();
         audio = GetComponent<AudioListener>();
         SetSound();
+
     }
 
     private void Update()
@@ -111,6 +115,8 @@ public class GameController : MonoBehaviour
         {
             
             gameOverPanel.SetActive(true);
+            audioSource.clip = gameOverSound;
+            audioSource.Play();
             finishScoreText.text = "Score: " +score.ToString();
 
             if (highScore == 0)
@@ -157,10 +163,13 @@ public class GameController : MonoBehaviour
     public void BricksRemove()
     {
         bricksCount--;
+        
 
         if (bricksCount == 0)
         {
             winPanel.SetActive(true);
+            audioSource.clip = winSound;
+            audioSource.Play();
             Time.timeScale = 0;
             
             if (highScore == 0)
