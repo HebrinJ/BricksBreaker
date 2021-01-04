@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
     {
         audioStatus = PlayerPrefs.GetInt("Sound");
         image = soundButton.GetComponent<Image>();
+        //audioStatus == 0 ? image.sprite = soundOff : image.sprite = soundOn;
         if (audioStatus == 0)
             image.sprite = soundOff;
         else

@@ -16,10 +16,12 @@ public class PlayerControl : MonoBehaviour
 
     public static bool isExplodeBall, isSlow;
     public GameObject shootingPosition, bullet;
-    private bool canShoot;
+    public bool canShoot;
     private int ammo;
 
     ShowTextEffect textEffect;
+
+    public bool isExpand, isNarrow;
 
         void Start()
     {
@@ -133,21 +135,32 @@ public class PlayerControl : MonoBehaviour
                 break;
             
             case ObjectTypes.expand:
-                transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
-                ShowTextEffect.spawnText = "Expand!!";
-                Invoke("ResetExpand", 10f);
+                if (!isExpand)
+                {
+                    transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+                    isExpand = true;
+                    ShowTextEffect.spawnText = "Expand!!";
+                    Invoke("ResetExpand", 10f);
+                }
                 break;
 
             case ObjectTypes.narrow:
-                transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
-                ShowTextEffect.spawnText = "narrow...";
-                Invoke("ResetNarrow", 10f);
+                if (!isNarrow)
+                {
+                    transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+                    isNarrow = true;
+                    ShowTextEffect.spawnText = "narrow...";
+                    Invoke("ResetNarrow", 10f);
+                }
                 break;
 
             case ObjectTypes.slow:
-                isSlow = true;
-                ShowTextEffect.spawnText = "Slow!";
-                Invoke("ResetSlow", 10f);
+                if (!isSlow)
+                {
+                    isSlow = true;
+                    ShowTextEffect.spawnText = "Slow!";
+                    Invoke("ResetSlow", 10f);
+                }
                 break;
 
             case ObjectTypes.ammo:
@@ -168,22 +181,24 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void ResetExpand()
+    public void ResetExpand()
     {
         transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+        isExpand = false;
     }
 
-    private void ResetNarrow()
+    public void ResetNarrow()
     {
         transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+        isNarrow = false;
     }
 
-    private void ResetExplode()
+    public void ResetExplode()
     {
         isExplodeBall = false;
     }
 
-    private void ResetSlow()
+    public void ResetSlow()
     {
         isSlow = false;
     }

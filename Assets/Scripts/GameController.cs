@@ -198,6 +198,15 @@ public class GameController : MonoBehaviour
 
             winScoreText.text = "Score: " + score;
             winHighScoreText.text = "High Score: " + highScore.ToString();
+
+            if (PlayerControl.isSlow)
+                playerControl.ResetSlow();
+            if (playerControl.isExpand)
+                playerControl.ResetExpand();
+            if (playerControl.isNarrow)
+                playerControl.ResetNarrow();
+            if (playerControl.canShoot)
+                playerControl.ResetShooting();
         }
     }
 
