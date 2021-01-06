@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerControl : MonoBehaviour
 {
     private float horizontalMove;
-    private float speed = 0.25f;
+    public float speed = 0.25f;
     
     private AudioSource audioSource;
     public AudioClip shootingSound, collisionSound, bonusSound;
@@ -86,11 +86,17 @@ public class PlayerControl : MonoBehaviour
 
             if(hitPoint.x < platformCenter.x)
             {
-                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 230));
+                if(isSlow)
+                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 200));
+                else if(!isSlow)
+                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 400));
             }
             else
             {
-                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 230));
+                if(isSlow)
+                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 200));
+                else if(!isSlow)
+                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 400));
             }
             ///Конец.
         }
@@ -104,7 +110,9 @@ public class PlayerControl : MonoBehaviour
             audioSource.clip = bonusSound;
             audioSource.Play();
             TakeEffect(type);
-
+            
+            Debug.Log("тип: " + type);
+            
             textEffect.ShowText();
 
             Destroy(collision.gameObject);
@@ -132,6 +140,7 @@ public class PlayerControl : MonoBehaviour
                     gameController.lives++;
                     gameController.heart1.enabled = true;
                 }
+                ShowTextEffect.spawnText = "";
                 break;
             
             case ObjectTypes.expand:
@@ -172,7 +181,7 @@ public class PlayerControl : MonoBehaviour
 
             case ObjectTypes.explode:
                 isExplodeBall = true;
-                Invoke("ResetExplode", 20f);
+                Invoke("ResetExplode", 5f);
                 break;
 
             default:

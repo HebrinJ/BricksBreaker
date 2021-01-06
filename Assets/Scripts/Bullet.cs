@@ -8,13 +8,13 @@ public class Bullet : MonoBehaviour
     public GameObject fallingObject;
     void Start()
     {
-        bulletSpeed = 0.01f;
+        bulletSpeed = 6f;
     }
 
     
     void Update()
     {
-        transform.Translate(Vector2.up * bulletSpeed);
+        transform.Translate(Vector2.up * bulletSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

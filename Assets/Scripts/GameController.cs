@@ -33,7 +33,6 @@ public class GameController : MonoBehaviour
 
     public GameObject startPosition;
 
-    //private AudioListener audio;
     private AudioSource audioSource;
     public AudioClip gameOverSound, winSound;
 
@@ -49,7 +48,6 @@ public class GameController : MonoBehaviour
         playerControl = playerplatform.GetComponent<PlayerControl>();
         currentLevel = 1;
         audioSource = GetComponent<AudioSource>();
-        //audio = GetComponent<AudioListener>();
         SetSound();
 
     }

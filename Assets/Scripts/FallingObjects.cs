@@ -44,7 +44,7 @@ public class FallingObjects : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.down.normalized * 0.005f);
+        transform.Translate(Vector2.down.normalized * 2f * Time.deltaTime);
     }
 
     private ObjectTypes SetType()
