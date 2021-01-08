@@ -7,11 +7,10 @@ public class PlayerControl : Singleton<PlayerControl>
 {
     private float horizontalMove;
     public float speed = 0.25f;
-    
-    ///private AudioSource audioSource;
-    ///public AudioClip shootingSound, collisionSound, bonusSound;
 
-    ///private GameController gameController;
+    private float time;
+    private bool isTimerOn;
+
     public GameObject controllerObject;
 
     public static bool isExplodeBall, isSlow;
@@ -21,22 +20,20 @@ public class PlayerControl : Singleton<PlayerControl>
 
     ShowTextEffect textEffect;
 
-    public bool isExpand, isNarrow;
-
-        void Start()
+    void Start()
     {
-        ///audioSource = GetComponent<AudioSource>();
-        ///gameController = controllerObject.GetComponent<GameController>();
         shootingPosition.SetActive(false);
         canShoot = false;
+        isTimerOn = false;
         textEffect = GameObject.Find("Canvas").GetComponent<ShowTextEffect>();
+        time = 0f;
     }
 
     void Update()
     {
         horizontalMove = Input.GetAxis("Horizontal");
-        
-        if(canShoot)
+
+        if (canShoot)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -44,23 +41,30 @@ public class PlayerControl : Singleton<PlayerControl>
                 {
                     Instantiate(bullet, shootingPosition.transform.position, Quaternion.identity);
                     GameController.Instance.PlaySound(GameController.Instance.shootSound);
-                    ///audioSource.clip = shootingSound;
-                    ///audioSource.Play();
                     ammo--;
                     if (ammo == 0)
                     {
-                        ResetShooting();
+                        ResetStatus();
                     }
                 }
             }
         }
-        
-        
+
+        if (time > 0 && isTimerOn)
+        {
+            time -= Time.deltaTime;
+            
+        }
+        else if (time <= 0 && isTimerOn)
+        {
+            ResetStatus();
+            isTimerOn = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        if(horizontalMove < 0)
+        if (horizontalMove < 0)
         {
             transform.Translate(Vector2.left.normalized * speed);
         }
@@ -72,11 +76,9 @@ public class PlayerControl : Singleton<PlayerControl>
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.CompareTag("Ball"))
+        if (collision.collider.CompareTag("Ball"))
         {
             GameController.Instance.PlaySound(GameController.Instance.collisionPlat);
-            //audioSource.clip = collisionSound;
-            //audioSource.Play();
             
             ///Начало. Изменение направления полета мяча в зависимости от того с какой частью платформы он столкнулся
             Rigidbody2D ball = collision.gameObject.GetComponent<Rigidbody2D>();
@@ -86,19 +88,19 @@ public class PlayerControl : Singleton<PlayerControl>
 
             float difference = platformCenter.x - hitPoint.x;
 
-            if(hitPoint.x < platformCenter.x)
+            if (hitPoint.x < platformCenter.x)
             {
-                if(isSlow)
-                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 200));
-                else if(!isSlow)
-                ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 400));
+                if (isSlow)
+                    ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 200));
+                else if (!isSlow)
+                    ball.AddForce(new Vector2((-Mathf.Abs(difference * 200)), 400));
             }
             else
             {
-                if(isSlow)
-                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 200));
-                else if(!isSlow)
-                ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 400));
+                if (isSlow)
+                    ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 200));
+                else if (!isSlow)
+                    ball.AddForce(new Vector2((Mathf.Abs(difference * 200)), 400));
             }
             ///Конец.
         }
@@ -106,60 +108,56 @@ public class PlayerControl : Singleton<PlayerControl>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("FallingObject"))
+        if (collision.CompareTag("FallingObject"))
         {
             ObjectTypes type = FallingObjects.type;
             GameController.Instance.PlaySound(GameController.Instance.bonusSound);
-            ///audioSource.clip = bonusSound;
-            ///audioSource.Play();
-            TakeEffect(type);
+            TakeStatus(type);
             textEffect.ShowText();
             Destroy(collision.gameObject);
-            
+
         }
     }
 
-    public void TakeEffect(ObjectTypes type)
+    public void TakeStatus(ObjectTypes type)
     {
+        ShowTextEffect.spawnText = "";
+        ResetStatus();
+
         switch (type)
         {
             case ObjectTypes.live:
-                if (GameController.Instance.lives == 2)
+                
+                foreach (var item in GameController.Instance.hearts)
                 {
-                    GameController.Instance.lives++;
-                    GameController.Instance.heart3.enabled = true;
+                    if (item.enabled)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        GameController.Instance.lives++;
+                        item.enabled = true;
+
+                        if (GameController.Instance.lives > 3)
+                            GameController.Instance.lives = 3;
+                    }
                 }
-                else if (GameController.Instance.lives == 1)
-                {
-                    GameController.Instance.lives++;
-                    GameController.Instance.heart2.enabled = true;
-                }
-                else if(GameController.Instance.lives == 0)
-                {
-                    GameController.Instance.lives++;
-                    GameController.Instance.heart1.enabled = true;
-                }
-                ShowTextEffect.spawnText = "";
+
                 break;
-            
+
             case ObjectTypes.expand:
-                if (!isExpand)
-                {
-                    transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
-                    isExpand = true;
-                    ShowTextEffect.spawnText = "Expand!!";
-                    Invoke("ResetExpand", 10f);
-                }
+                transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
+                ShowTextEffect.spawnText = "Expand!!";
+                isTimerOn = true;
+                time = 10;
                 break;
 
             case ObjectTypes.narrow:
-                if (!isNarrow)
-                {
-                    transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
-                    isNarrow = true;
-                    ShowTextEffect.spawnText = "narrow...";
-                    Invoke("ResetNarrow", 10f);
-                }
+                transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
+                ShowTextEffect.spawnText = "narrow...";
+                isTimerOn = true;
+                time = 10;
                 break;
 
             case ObjectTypes.slow:
@@ -167,8 +165,9 @@ public class PlayerControl : Singleton<PlayerControl>
                 {
                     isSlow = true;
                     ShowTextEffect.spawnText = "Slow!";
-                    Invoke("ResetSlow", 10f);
                 }
+                isTimerOn = true;
+                time = 10;
                 break;
 
             case ObjectTypes.ammo:
@@ -178,44 +177,28 @@ public class PlayerControl : Singleton<PlayerControl>
                 ammo = 3;
                 break;
 
-            case ObjectTypes.explode:
+            /*case ObjectTypes.explode:
                 isExplodeBall = true;
                 Invoke("ResetExplode", 5f);
-                break;
+                break;*/
 
             default:
-                ShowTextEffect.spawnText = "";
                 break;
         }
     }
 
-    public void ResetExpand()
+    public void ResetStatus()
     {
-        transform.localScale = new Vector2(transform.localScale.x / 2, transform.localScale.y);
-        isExpand = false;
-    }
-
-    public void ResetNarrow()
-    {
-        transform.localScale = new Vector2(transform.localScale.x * 2, transform.localScale.y);
-        isNarrow = false;
-    }
-
-    public void ResetExplode()
-    {
-        isExplodeBall = false;
-    }
-
-    public void ResetSlow()
-    {
-        isSlow = false;
-    }
-
-    public void ResetShooting()
-    {
+        transform.localScale = new Vector2(0.6f, 0.6f);
+        
         shootingPosition.SetActive(false);
         canShoot = false;
         ammo = 0;
+
+        isSlow = false;
         
+        isTimerOn = false;
+        time = 0;
     }
+    
 }

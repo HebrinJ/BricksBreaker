@@ -5,15 +5,7 @@ using UnityEngine;
 public class Brick : MonoBehaviour
 {
     public GameObject burst, explode;
-    ///private GameController gameController;
     
-    private void Start()
-    {
-        ///gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        
-        
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject explosion = Instantiate(burst, transform.position, Quaternion.identity);

@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FallingObjects : MonoBehaviour
 {
     public Sprite liveSprite, expandSprite, narrowSprite, slowSprite, ammoSprite, explodeSprite;
     private SpriteRenderer spRender;
     public static ObjectTypes type;
+    private float fallSpeed = 2f;
     
 
     private void Start()
@@ -44,7 +43,7 @@ public class FallingObjects : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.down.normalized * 2f * Time.deltaTime);
+        transform.Translate(Vector2.down.normalized * fallSpeed * Time.deltaTime);
     }
 
     private ObjectTypes SetType()
@@ -63,13 +62,12 @@ public class FallingObjects : MonoBehaviour
                 return ObjectTypes.slow;
             case 5:
                 return ObjectTypes.ammo;
-            case 6:
-                return ObjectTypes.explode;
+            //case 6:                             ///Отключено
+            //    return ObjectTypes.explode;
             default:
-                break;
+                return ObjectTypes.live;
         }
-
-        return ObjectTypes.live;
+                
     }
 
 }

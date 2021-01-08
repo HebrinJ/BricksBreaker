@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float bulletSpeed;
+    private float bulletSpeed = 6f;
     public GameObject fallingObject;
-    void OnAwake()
-    {
-        bulletSpeed = 6f;
-    }
-
+    
         void Update()
     {
         transform.Translate(Vector2.up * bulletSpeed * Time.deltaTime);

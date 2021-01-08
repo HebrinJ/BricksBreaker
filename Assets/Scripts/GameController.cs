@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -12,17 +10,12 @@ public class GameController : Singleton<GameController>
     public int highScore;
     private int scoreStep = 10;
 
-    public Text scoreText;
-    public Image heart1, heart2, heart3;
+    public Image [] hearts;
     public GameObject gameOverPanel;
-    public Text finishScoreText, finishHighScoreText;
-    public Text winScoreText, winHighScoreText;
-    public Text winGameScoreText, winGameHighScoreText;
-
-    public GameObject winPanel;
-    public GameObject pausePanel;
-    public GameObject winGamePanel;
-
+    public Text scoreText, finishScoreText, finishHighScoreText, winScoreText, winHighScoreText, winGameScoreText, winGameHighScoreText;
+    
+    public GameObject winPanel, pausePanel, winGamePanel;
+    
     private int bricksCount;
   
     public GameObject level1, level2, level3;
@@ -30,15 +23,12 @@ public class GameController : Singleton<GameController>
     private int currentLevel;
 
     public GameObject playerplatform;
-    private PlayerControl playerControl;
-
+    
     public GameObject startPosition;
 
     private AudioSource audioSource;
     public AudioClip gameOverSound, winSound, collisionPlat, collisionBrick, shootSound, bonusSound, failSound;
-    ///public AudioClip[] audioClips;
     
-
     void Start()
     {
         gameOverPanel.SetActive(false);
@@ -48,11 +38,9 @@ public class GameController : Singleton<GameController>
         score = 0;
         startGame = true;
         bricksCount = level1.transform.childCount;
-        playerControl = playerplatform.GetComponent<PlayerControl>();
         currentLevel = 1;
         audioSource = GetComponent<AudioSource>();
         SetSound();
-        
     }
 
     private void Update()
@@ -78,6 +66,11 @@ public class GameController : Singleton<GameController>
             AudioListener.volume = 0;
     }
 
+    public void ShowUIText(string text, Text value)
+    {
+        value.text = text;
+    }
+
     private void Pause()
     {
         Time.timeScale = 0;
@@ -96,8 +89,7 @@ public class GameController : Singleton<GameController>
     public void UpScore()
     {
         score += scoreStep;
-        scoreText.text = "Score: " +score.ToString();
-        
+        ShowUIText("Score: " +score.ToString(), scoreText);
     }
 
     public void RemoveLive()
@@ -107,13 +99,13 @@ public class GameController : Singleton<GameController>
         switch (lives)
         {
             case 2:
-                heart3.enabled = false;
+                hearts[2].enabled = false;
                 break;
             case 1:
-                heart2.enabled = false;
+                hearts[1].enabled = false;
                 break;
             case 0:
-                heart1.enabled = false;
+                hearts[0].enabled = false;
                 break;
             default:
                 break;
@@ -123,10 +115,8 @@ public class GameController : Singleton<GameController>
         {
             
             gameOverPanel.SetActive(true);
-            audioSource.clip = gameOverSound;
-            
-            audioSource.Play();
-            finishScoreText.text = "Score: " +score.ToString();
+            PlaySound(gameOverSound);
+            ShowUIText("Score: " + score.ToString(), finishScoreText);
 
             if (highScore == 0)
             {
@@ -139,8 +129,7 @@ public class GameController : Singleton<GameController>
                 PlayerPrefs.SetInt("HighScore", highScore);
             }
 
-            finishHighScoreText.text = "High Score: " +highScore.ToString();
-
+            ShowUIText("High Score: " + highScore.ToString(), finishHighScoreText);
             Time.timeScale = 0;
         }
     }
@@ -152,14 +141,18 @@ public class GameController : Singleton<GameController>
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
         winPanel.SetActive(false);
+        
         lives = 3;
-        heart1.enabled = true;
-        heart2.enabled = true;
-        heart3.enabled = true;
+        foreach(var item in hearts)
+        {
+            item.enabled = true;
+        }
+                
         score = 0;
         startGame = true;
-        scoreText.text = "score: " +score.ToString();
-        playerControl.ResetShooting();
+        ShowUIText("score: " + score.ToString(), scoreText);
+        
+        PlayerControl.Instance.ResetStatus();
     }
 
     public void Quit()
@@ -182,14 +175,12 @@ public class GameController : Singleton<GameController>
             }
             else if (currentLevel >= 3)
             {
-                Time.timeScale = 0;
                 winGamePanel.SetActive(true);
-                winGameScoreText.text = "Score: " + score.ToString();
-                winGameHighScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore").ToString();
+                ShowUIText("Score: " + score.ToString(), winGameScoreText);
+                ShowUIText("High Score: " + PlayerPrefs.GetInt("HighScore").ToString(), winGameHighScoreText);
             }
 
-            audioSource.clip = winSound;
-            audioSource.Play();
+            PlaySound(winSound);
             Time.timeScale = 0;
             
             if (highScore == 0)
@@ -203,17 +194,10 @@ public class GameController : Singleton<GameController>
                 PlayerPrefs.SetInt("HighScore", highScore);
             }
 
-            winScoreText.text = "Score: " + score;
-            winHighScoreText.text = "High Score: " + highScore.ToString();
-
-            if (PlayerControl.isSlow)
-                playerControl.ResetSlow();
-            if (playerControl.isExpand)
-                playerControl.ResetExpand();
-            if (playerControl.isNarrow)
-                playerControl.ResetNarrow();
-            if (playerControl.canShoot)
-                playerControl.ResetShooting();
+            ShowUIText("Score: " + score.ToString(), winScoreText);
+            ShowUIText("High Score: " + highScore.ToString(), winHighScoreText);
+            
+            PlayerControl.Instance.ResetStatus();
         }
     }
 
