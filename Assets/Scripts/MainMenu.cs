@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -16,10 +14,6 @@ public class MainMenu : MonoBehaviour
         audioStatus = PlayerPrefs.GetInt("Sound");
         image = soundButton.GetComponent<Image>();
         image.sprite = audioStatus == 0 ? soundOff : soundOn;
-        /*if (audioStatus == 0)
-            image.sprite = soundOff;
-        else
-            image.sprite = soundOn;*/
     }
 
     public void StartGame()

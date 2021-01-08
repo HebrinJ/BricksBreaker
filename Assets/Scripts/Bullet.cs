@@ -6,13 +6,12 @@ public class Bullet : MonoBehaviour
 {
     private float bulletSpeed;
     public GameObject fallingObject;
-    void Start()
+    void OnAwake()
     {
         bulletSpeed = 6f;
     }
 
-    
-    void Update()
+        void Update()
     {
         transform.Translate(Vector2.up * bulletSpeed * Time.deltaTime);
     }
@@ -22,7 +21,6 @@ public class Bullet : MonoBehaviour
         if (collision.collider.CompareTag("GoldBrick"))
         {
             Instantiate(fallingObject, collision.transform.position, Quaternion.identity);
-
         }
 
     }

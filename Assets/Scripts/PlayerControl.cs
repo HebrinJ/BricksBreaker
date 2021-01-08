@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : Singleton<PlayerControl>
 {
     private float horizontalMove;
     public float speed = 0.25f;
     
-    private AudioSource audioSource;
-    public AudioClip shootingSound, collisionSound, bonusSound;
+    ///private AudioSource audioSource;
+    ///public AudioClip shootingSound, collisionSound, bonusSound;
 
-    private GameController gameController;
+    ///private GameController gameController;
     public GameObject controllerObject;
 
     public static bool isExplodeBall, isSlow;
@@ -25,8 +25,8 @@ public class PlayerControl : MonoBehaviour
 
         void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        gameController = controllerObject.GetComponent<GameController>();
+        ///audioSource = GetComponent<AudioSource>();
+        ///gameController = controllerObject.GetComponent<GameController>();
         shootingPosition.SetActive(false);
         canShoot = false;
         textEffect = GameObject.Find("Canvas").GetComponent<ShowTextEffect>();
@@ -43,8 +43,9 @@ public class PlayerControl : MonoBehaviour
                 if (ammo > 0)
                 {
                     Instantiate(bullet, shootingPosition.transform.position, Quaternion.identity);
-                    audioSource.clip = shootingSound;
-                    audioSource.Play();
+                    GameController.Instance.PlaySound(GameController.Instance.shootSound);
+                    ///audioSource.clip = shootingSound;
+                    ///audioSource.Play();
                     ammo--;
                     if (ammo == 0)
                     {
@@ -73,8 +74,9 @@ public class PlayerControl : MonoBehaviour
     {
         if(collision.collider.CompareTag("Ball"))
         {
-            audioSource.clip = collisionSound;
-            audioSource.Play();
+            GameController.Instance.PlaySound(GameController.Instance.collisionPlat);
+            //audioSource.clip = collisionSound;
+            //audioSource.Play();
             
             ///Начало. Изменение направления полета мяча в зависимости от того с какой частью платформы он столкнулся
             Rigidbody2D ball = collision.gameObject.GetComponent<Rigidbody2D>();
@@ -107,14 +109,11 @@ public class PlayerControl : MonoBehaviour
         if(collision.CompareTag("FallingObject"))
         {
             ObjectTypes type = FallingObjects.type;
-            audioSource.clip = bonusSound;
-            audioSource.Play();
+            GameController.Instance.PlaySound(GameController.Instance.bonusSound);
+            ///audioSource.clip = bonusSound;
+            ///audioSource.Play();
             TakeEffect(type);
-            
-            Debug.Log("тип: " + type);
-            
             textEffect.ShowText();
-
             Destroy(collision.gameObject);
             
         }
@@ -125,20 +124,20 @@ public class PlayerControl : MonoBehaviour
         switch (type)
         {
             case ObjectTypes.live:
-                if (gameController.lives == 2)
+                if (GameController.Instance.lives == 2)
                 {
-                    gameController.lives++;
-                    gameController.heart3.enabled = true;
+                    GameController.Instance.lives++;
+                    GameController.Instance.heart3.enabled = true;
                 }
-                else if (gameController.lives == 1)
+                else if (GameController.Instance.lives == 1)
                 {
-                    gameController.lives++;
-                    gameController.heart2.enabled = true;
+                    GameController.Instance.lives++;
+                    GameController.Instance.heart2.enabled = true;
                 }
-                else if(gameController.lives == 0)
+                else if(GameController.Instance.lives == 0)
                 {
-                    gameController.lives++;
-                    gameController.heart1.enabled = true;
+                    GameController.Instance.lives++;
+                    GameController.Instance.heart1.enabled = true;
                 }
                 ShowTextEffect.spawnText = "";
                 break;

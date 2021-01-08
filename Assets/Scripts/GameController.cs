@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
+        
     public int score;
     public int lives;
     public int highScore;
@@ -34,7 +35,9 @@ public class GameController : MonoBehaviour
     public GameObject startPosition;
 
     private AudioSource audioSource;
-    public AudioClip gameOverSound, winSound;
+    public AudioClip gameOverSound, winSound, collisionPlat, collisionBrick, shootSound, bonusSound, failSound;
+    ///public AudioClip[] audioClips;
+    
 
     void Start()
     {
@@ -49,7 +52,7 @@ public class GameController : MonoBehaviour
         currentLevel = 1;
         audioSource = GetComponent<AudioSource>();
         SetSound();
-
+        
     }
 
     private void Update()
@@ -61,6 +64,11 @@ public class GameController : MonoBehaviour
       
     }
 
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
     private void SetSound()
     {
         if (PlayerPrefs.GetInt("Sound") == 1)
@@ -116,6 +124,7 @@ public class GameController : MonoBehaviour
             
             gameOverPanel.SetActive(true);
             audioSource.clip = gameOverSound;
+            
             audioSource.Play();
             finishScoreText.text = "Score: " +score.ToString();
 
